@@ -76,7 +76,7 @@ def SaveText(htmlText, url):
     dTexto = DaoTexto()
     m = ModelTexto()
     m.IdTexto = str(uuid1())
-    m.IdTipoTexto = "0240eda1-e615-41c8-a38d-4e85a6fdf553"
+    m.IdTipoTexto = 'a02e67b8-016a-423b-b6a4-f0500f880d6f'
     m.Texto = BeautifulStoneSoup(htmlText,
                                  convertEntities=BeautifulStoneSoup.HTML_ENTITIES) # Formata encode Resposta
     urlObject = dUrl.pesquisaUrlPelaUrl(url)

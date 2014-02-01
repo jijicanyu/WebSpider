@@ -1,0 +1,78 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+
+CREATE SCHEMA IF NOT EXISTS `WebSpider` DEFAULT CHARACTER SET latin1 ;
+USE `WebSpider` ;
+
+-- -----------------------------------------------------
+-- Table `WebSpider`.`tipoTexto`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `WebSpider`.`tipoTexto` (
+  `idTipoTexto` VARCHAR(36) NOT NULL ,
+  `descricao` VARCHAR(100) NOT NULL ,
+  `seLingProgramacao` TINYINT(4) NOT NULL ,
+  PRIMARY KEY (`idTipoTexto`) ,
+  UNIQUE INDEX `idtipoTexto_UNIQUE` (`idTipoTexto` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `WebSpider`.`Texto`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `WebSpider`.`Texto` (
+  `idTexto` VARCHAR(36) NOT NULL ,
+  `texto` VARCHAR(1000) NOT NULL ,
+  `idTipoTexto` VARCHAR(36) NOT NULL ,
+  `idUrl` VARCHAR(36) NOT NULL ,
+  PRIMARY KEY (`idTexto`) ,
+  UNIQUE INDEX `idTexto_UNIQUE` (`idTexto` ASC) ,
+  INDEX `fk_Texto_1` (`idUrl` ASC) ,
+  CONSTRAINT `tipoTexto`
+    FOREIGN KEY (`idTipoTexto` )
+    REFERENCES `WebSpider`.`tipoTexto` (`idTipoTexto` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `WebSpider`.`Url`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `WebSpider`.`Url` (
+  `idUrl` VARCHAR(36) NOT NULL ,
+  `urlCaminho` VARCHAR(200) NOT NULL ,
+  `idUrlPai` VARCHAR(36) NULL DEFAULT NULL ,
+  `nivelRecursividade` INT(11) NULL DEFAULT NULL ,
+  `dataCadastro` DATETIME NULL DEFAULT NULL ,
+  `seBase` TINYINT(4) NULL DEFAULT NULL ,
+  PRIMARY KEY (`idUrl`) ,
+  UNIQUE INDEX `idUrl_UNIQUE` (`idUrl` ASC) ,
+  INDEX `UrlPai` (`idUrlPai` ASC) ,
+  CONSTRAINT `UrlPai`
+    FOREIGN KEY (`idUrlPai` )
+    REFERENCES `WebSpider`.`Url` (`idUrl` )
+    ON DELETE SET NULL
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+INSERT INTO `WebSpider`.`tipoTexto`
+(`idTipoTexto`,
+`descricao`,
+`seLingProgramacao`)
+VALUES
+(
+'a02e67b8-016a-423b-b6a4-f0500f880d6f',
+'textoPuro',
+1
+);
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
